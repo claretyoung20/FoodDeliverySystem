@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiParseLinks, JhiDataUtils } from 'ng-jhipster';
+import { Observable, Subscription } from 'rxjs';
+import { JhiEventManager, JhiParseLinks, JhiDataUtils, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IMenu } from 'app/shared/model/menu.model';
@@ -10,6 +10,10 @@ import { IMenu } from 'app/shared/model/menu.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { MenuService } from './menu.service';
 import { MenuDeleteDialogComponent } from './menu-delete-dialog.component';
+import { ICart } from 'app/shared/model/cart.model';
+import { CartService } from 'app/entities/cart/cart.service';
+import { Account } from 'app/core/user/account.model';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-menu',
@@ -28,6 +32,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   predicate: any;
   previousPage: any;
   reverse: any;
+  account: Account;
 
   constructor(
     protected menuService: MenuService,
@@ -36,7 +41,10 @@ export class MenuComponent implements OnInit, OnDestroy {
     protected dataUtils: JhiDataUtils,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected cartService: CartService,
+    private accountService: AccountService,
+    protected jhiAlertService: JhiAlertService
   ) {
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -89,6 +97,9 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadAll();
+    this.accountService.identity().subscribe((account: Account) => {
+      this.account = account;
+    });
     this.registerChangeInMenus();
   }
 
@@ -129,5 +140,25 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
     this.menus = data;
+  }
+
+  // Add to cart
+  addToCart(menu: IMenu) {
+    const cart: ICart = {};
+    cart.menuId = menu.id;
+    cart.userId = this.account.id;
+
+    this.subscribeToSaveResponse(this.cartService.create(cart));
+  }
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ICart>>) {
+    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  }
+  protected onSaveSuccess() {
+    this.jhiAlertService.success('food has been added to cart!!!', null, null);
+  }
+
+  protected onSaveError() {
+    this.jhiAlertService.error('Fail to add food..', null, null);
   }
 }

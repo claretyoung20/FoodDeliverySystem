@@ -1,0 +1,81 @@
+<div>
+    <h2 id="page-heading">
+        <span>Carts</span>
+        <button  *jhiHasAnyAuthority="'ROLE_ADMIN'" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-cart" [routerLink]="['/cart/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create a new Cart
+            </span>
+        </button>
+        <button  *jhiHasAnyAuthority="'ROLE_USER'" id="jh-checkout-entity" class="btn btn-primary float-right jh-create-entity create-cart" [routerLink]="['/cart']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Checkout
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="carts?.length === 0">
+        <span>No carts found</span>
+    </div>
+    <div class="table-responsive" *ngIf="carts?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="dateCreated"><span>Date Created</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="dateUpdated"><span>Date Updated</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="menuName"><span>Menu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="userLogin"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let cart of carts ;trackBy: trackId">
+                <td><a [routerLink]="['/cart', cart.id, 'view' ]">{{cart.id}}</a></td>
+                <td>{{cart.dateCreated | date:'medium'}}</td>
+                <td>{{cart.dateUpdated | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="cart.menuId">
+                        <a [routerLink]="['/menu', cart.menuId , 'view' ]" >{{cart.menuName}}</a>
+                    </div>
+                </td>
+                <td>
+                    {{cart.userLogin}}
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/cart', cart.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button *jhiHasAnyAuthority="'ROLE_VENDOR'" type="submit"
+                                [routerLink]="['/cart', cart.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(cart)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div [hidden]="carts?.length === 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

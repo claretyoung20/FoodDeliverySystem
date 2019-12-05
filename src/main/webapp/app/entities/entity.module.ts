@@ -7,6 +7,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'menu',
         loadChildren: () => import('./menu/menu.module').then(m => m.ByteworkMenuModule)
+      },
+      {
+        path: 'cart',
+        loadChildren: () => import('./cart/cart.module').then(m => m.ByteworkCartModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

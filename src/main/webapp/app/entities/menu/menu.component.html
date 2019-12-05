@@ -1,119 +1,123 @@
-<div *jhiHasAnyAuthority="'ROLE_VENDOR'">
-    <h2 id="page-heading">
-        <span>Menus</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-menu" [routerLink]="['/menu/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span >
-            Create a new Menu
-            </span>
-        </button>
-    </h2>
-    <jhi-alert-error></jhi-alert-error>
-    <jhi-alert></jhi-alert>
-    <br/>
-    <div class="alert alert-warning" *ngIf="menus?.length === 0">
-        <span>No menus found</span>
-    </div>
-    <div class="table-responsive" *ngIf="menus?.length > 0">
-        <table class="table table-striped" aria-describedby="page-heading">
-            <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="dateCreated"><span>Date Created</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="dateUpdated"><span>Date Updated</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="name"><span>Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="price"><span>Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="image"><span>Image</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="isAvailable"><span>Is Available</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="userLogin"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let menu of menus ;trackBy: trackId">
-                <td><a [routerLink]="['/menu', menu.id, 'view' ]">{{menu.id}}</a></td>
-                <td>{{menu.dateCreated | date:'medium'}}</td>
-                <td>{{menu.dateUpdated | date:'medium'}}</td>
-                <td>{{menu.description}}</td>
-                <td>{{menu.name}}</td>
-                <td>{{menu.price}}</td>
-                <td>
-                    <a *ngIf="menu.image" (click)="openFile(menu.imageContentType, menu.image)">
-                        <img [src]="'data:' + menu.imageContentType + ';base64,' + menu.image" style="max-height: 30px;" alt="menu image"/>
-                    </a>
-                    <span *ngIf="menu.image">{{menu.imageContentType}}, {{byteSize(menu.image)}}</span>
-                </td>
-                <td>{{menu.isAvailable}}</td>
-                <td>
-                    {{menu.userLogin}}
-                </td>
-                <td class="text-right">
-                    <div class="btn-group">
-                        <button type="submit"
-                                [routerLink]="['/menu', menu.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/menu', menu.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline">Edit</span>
-                        </button>
-                        <button type="submit" (click)="delete(menu)"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div [hidden]="menus?.length === 0">
-        <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+<div>
+    <div *jhiHasAnyAuthority="'ROLE_VENDOR'">
+        <h2 id="page-heading">
+            <span>Menus</span>
+            <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-menu" [routerLink]="['/menu/new']">
+                <fa-icon [icon]="'plus'"></fa-icon>
+                <span >
+                    Create a new Menu
+                </span>
+            </button>
+        </h2>
+        <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
+        <br/>
+        <div class="alert alert-warning" *ngIf="menus?.length === 0">
+            <span>No menus found</span>
         </div>
-        <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
-        </div>
-    </div>
-</div>
-
-
-<!-- FOR USER VIEW -->
-
-<br/>
-<div *jhiHasAnyAuthority="'ROLE_USER'">
-    <div class="main-content">
-        <div class="container-fluid">
-            <h3 style="font-weight: bolder"> LIST OF AVAILABLE FOODS</h3>
-            <br/><br/>
-            <div class="row">
-                <div  *ngFor="let menu of menus ;trackBy: trackId" class="col-md-3">
-                    <div class="card" *ngIf="menu.isAvailable">
-                        <div class="card-header card-header-danger">
-                            <h4 class="card-title">{{menu.name}} |<b>#{{ menu.price}}</b></h4>
-                            <p class="card-category">{{ menu.description}}</p>
-                        </div>
-                        <div class="card-body">
-                            <div *ngIf="menu.image">
-                                <a (click)="openFile(menu.imageContentType, menu.image)">
-                                    <img class="img-responsive" [src]="'data:' + menu.imageContentType + ';base64,' + menu.image" style="max-width: 100%;" alt="menu image"/>
-                                </a>
+        <div class="table-responsive" *ngIf="menus?.length > 0">
+            <table class="table table-striped" aria-describedby="page-heading">
+                <thead>
+                    <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                        <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                        <th scope="col"  jhiSortBy="dateCreated"><span>Date Created</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                        <th scope="col"  jhiSortBy="dateUpdated"><span>Date Updated</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                        <th scope="col"  jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                        <th scope="col"  jhiSortBy="name"><span>Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                        <th scope="col"  jhiSortBy="price"><span>Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                        <th scope="col"  jhiSortBy="image"><span>Image</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                        <th scope="col"  jhiSortBy="isAvailable"><span>Is Available</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                        <th scope="col"  jhiSortBy="userLogin"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let menu of menus ;trackBy: trackId">
+                        <td><a [routerLink]="['/menu', menu.id, 'view' ]">{{menu.id}}</a></td>
+                        <td>{{menu.dateCreated | date:'medium'}}</td>
+                        <td>{{menu.dateUpdated | date:'medium'}}</td>
+                        <td>{{menu.description}}</td>
+                        <td>{{menu.name}}</td>
+                        <td>{{menu.price}}</td>
+                        <td>
+                            <a *ngIf="menu.image" (click)="openFile(menu.imageContentType, menu.image)">
+                                <img [src]="'data:' + menu.imageContentType + ';base64,' + menu.image" style="max-height: 30px;" alt="menu image"/>
+                            </a>
+                            <span *ngIf="menu.image">{{menu.imageContentType}}, {{byteSize(menu.image)}}</span>
+                        </td>
+                        <td>{{menu.isAvailable}}</td>
+                        <td>
+                            {{menu.userLogin}}
+                        </td>
+                        <td class="text-right">
+                            <div class="btn-group">
+                                <button type="submit"
+                                    [routerLink]="['/menu', menu.id, 'view' ]"
+                                        class="btn btn-info btn-sm">
+                                    <fa-icon [icon]="'eye'"></fa-icon>
+                                    <span class="d-none d-md-inline">View</span>
+                                </button>
+                                <button type="submit"
+                                    [routerLink]="['/menu', menu.id, 'edit']"
+                                        class="btn btn-primary btn-sm">
+                                    <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                                    <span class="d-none d-md-inline">Edit</span>
+                                </button>
+                                <button type="submit" (click)="delete(menu)"
+                                        class="btn btn-danger btn-sm">
+                                    <fa-icon [icon]="'times'"></fa-icon>
+                                    <span class="d-none d-md-inline">Delete</span>
+                                </button>
                             </div>
-                        </div>
-
-                        <button mat-raised-button type="submit" class="btn btn-danger pull-right">Add To Cart</button>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div [hidden]="menus?.length === 0">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
             </div>
         </div>
+    </div>
+
+
+    <!-- FOR USER VIEW -->
+
+    <br/>
+    <div *jhiHasAnyAuthority="'ROLE_USER'">
+        <div class="main-content">
+            <div class="container-fluid">
+                <h3 style="font-weight: bolder"> LIST OF AVAILABLE FOODS</h3>
+                <jhi-alert></jhi-alert>
+                <br/><br/>
+                <div class="row">
+                    <div  *ngFor="let menu of menus ;trackBy: trackId" class="col-md-3">
+                        <div class="card" *ngIf="menu.isAvailable">
+                            <div class="card-header card-header-danger">
+                                <h4 class="card-title">{{menu.name}} |<b>#{{ menu.price}}</b></h4>
+                                <p class="card-category">{{ menu.description}}</p>
+                            </div>
+                            <div class="card-body">
+                                <div *ngIf="menu.image">
+                                    <a (click)="openFile(menu.imageContentType, menu.image)">
+                                        <img class="img-responsive" [src]="'data:' + menu.imageContentType + ';base64,' + menu.image" style="max-width: 100%;" alt="menu image"/>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <button mat-raised-button (click)="addToCart(menu)" class="btn btn-danger pull-right">Add To Cart</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>
