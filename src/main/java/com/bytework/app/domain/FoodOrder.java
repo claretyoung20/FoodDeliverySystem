@@ -8,11 +8,11 @@ import java.io.Serializable;
 import java.time.Instant;
 
 /**
- * A CardInfo.
+ * A FoodOrder.
  */
 @Entity
-@Table(name = "card_info")
-public class CardInfo implements Serializable {
+@Table(name = "food_order")
+public class FoodOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,20 +21,17 @@ public class CardInfo implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "name_on_card", nullable = false)
-    private String nameOnCard;
+    @Column(name = "base_total", nullable = false)
+    private Double baseTotal;
 
     @NotNull
-    @Column(name = "cvv", nullable = false)
-    private String cvv;
+    @DecimalMin(value = "1")
+    @Column(name = "final_total", nullable = false)
+    private Double finalTotal;
 
     @NotNull
-    @Column(name = "card_number", nullable = false)
-    private String cardNumber;
-
-    @NotNull
-    @Column(name = "expire_date", nullable = false)
-    private String expireDate;
+    @Column(name = "vendor_id", nullable = false)
+    private Long vendorId;
 
     @Column(name = "date_created")
     private Instant dateCreated;
@@ -44,8 +41,15 @@ public class CardInfo implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties("cardInfos")
+    @JsonIgnoreProperties("foodOrders")
     private User user;
+
+    @ManyToOne
+    private OrderStatus orderStatus;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private PaymentMethod paymentMethod;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -56,63 +60,50 @@ public class CardInfo implements Serializable {
         this.id = id;
     }
 
-    public String getNameOnCard() {
-        return nameOnCard;
+    public Double getBaseTotal() {
+        return baseTotal;
     }
 
-    public CardInfo nameOnCard(String nameOnCard) {
-        this.nameOnCard = nameOnCard;
+    public FoodOrder baseTotal(Double baseTotal) {
+        this.baseTotal = baseTotal;
         return this;
     }
 
-    public void setNameOnCard(String nameOnCard) {
-        this.nameOnCard = nameOnCard;
+    public void setBaseTotal(Double baseTotal) {
+        this.baseTotal = baseTotal;
     }
 
-    public String getCvv() {
-        return cvv;
+    public Double getFinalTotal() {
+        return finalTotal;
     }
 
-    public CardInfo cvv(String cvv) {
-        this.cvv = cvv;
+    public FoodOrder finalTotal(Double finalTotal) {
+        this.finalTotal = finalTotal;
         return this;
     }
 
-    public void setCvv(String cvv) {
-        this.cvv = cvv;
+    public void setFinalTotal(Double finalTotal) {
+        this.finalTotal = finalTotal;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public Long getVendorId() {
+        return vendorId;
     }
 
-    public CardInfo cardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public FoodOrder vendorId(Long vendorId) {
+        this.vendorId = vendorId;
         return this;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public String getExpireDate() {
-        return expireDate;
-    }
-
-    public CardInfo expireDate(String expireDate) {
-        this.expireDate = expireDate;
-        return this;
-    }
-
-    public void setExpireDate(String expireDate) {
-        this.expireDate = expireDate;
+    public void setVendorId(Long vendorId) {
+        this.vendorId = vendorId;
     }
 
     public Instant getDateCreated() {
         return dateCreated;
     }
 
-    public CardInfo dateCreated(Instant dateCreated) {
+    public FoodOrder dateCreated(Instant dateCreated) {
         this.dateCreated = dateCreated;
         return this;
     }
@@ -125,7 +116,7 @@ public class CardInfo implements Serializable {
         return dateUpdated;
     }
 
-    public CardInfo dateUpdated(Instant dateUpdated) {
+    public FoodOrder dateUpdated(Instant dateUpdated) {
         this.dateUpdated = dateUpdated;
         return this;
     }
@@ -138,13 +129,39 @@ public class CardInfo implements Serializable {
         return user;
     }
 
-    public CardInfo user(User user) {
+    public FoodOrder user(User user) {
         this.user = user;
         return this;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public FoodOrder orderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+        return this;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public FoodOrder paymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+        return this;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     @PrePersist
@@ -157,6 +174,7 @@ public class CardInfo implements Serializable {
     void onPreUpdate() {
         dateUpdated = Instant.now();
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -164,10 +182,10 @@ public class CardInfo implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof CardInfo)) {
+        if (!(o instanceof FoodOrder)) {
             return false;
         }
-        return id != null && id.equals(((CardInfo) o).id);
+        return id != null && id.equals(((FoodOrder) o).id);
     }
 
     @Override
@@ -177,12 +195,11 @@ public class CardInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "CardInfo{" +
+        return "FoodOrder{" +
             "id=" + getId() +
-            ", nameOnCard='" + getNameOnCard() + "'" +
-            ", cvv='" + getCvv() + "'" +
-            ", cardNumber='" + getCardNumber() + "'" +
-            ", expireDate='" + getExpireDate() + "'" +
+            ", baseTotal=" + getBaseTotal() +
+            ", finalTotal=" + getFinalTotal() +
+            ", vendorId=" + getVendorId() +
             ", dateCreated='" + getDateCreated() + "'" +
             ", dateUpdated='" + getDateUpdated() + "'" +
             "}";

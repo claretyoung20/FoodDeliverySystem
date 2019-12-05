@@ -1,0 +1,59 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="foodOrder">
+            <h2><span>Food Order</span> {{foodOrder.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Base Total</span></dt>
+                <dd>
+                    <span>{{foodOrder.baseTotal}}</span>
+                </dd>
+                <dt><span>Final Total</span></dt>
+                <dd>
+                    <span>{{foodOrder.finalTotal}}</span>
+                </dd>
+                <dt><span>Vendor Id</span></dt>
+                <dd>
+                    <span>{{foodOrder.vendorId}}</span>
+                </dd>
+                <dt><span>Date Created</span></dt>
+                <dd>
+                    <span>{{foodOrder.dateCreated}}</span>
+                </dd>
+                <dt><span>Date Updated</span></dt>
+                <dd>
+                    <span>{{foodOrder.dateUpdated}}</span>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    {{foodOrder.userLogin}}
+                </dd>
+                <dt><span>Order Status</span></dt>
+                <dd>
+                    <div *ngIf="foodOrder.orderStatusId">
+                        <a [routerLink]="['/order-status', foodOrder.orderStatusId, 'view']">{{foodOrder.orderStatusStatus}}</a>
+                    </div>
+                </dd>
+                <dt><span>Payment Method</span></dt>
+                <dd>
+                    <div *ngIf="foodOrder.paymentMethodId">
+                        <a [routerLink]="['/payment-method', foodOrder.paymentMethodId, 'view']">{{foodOrder.paymentMethodMethod}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/food-order', foodOrder.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

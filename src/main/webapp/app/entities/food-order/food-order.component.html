@@ -1,65 +1,71 @@
 <div>
     <h2 id="page-heading">
-        <span>Carts</span>
-        <button  *jhiHasAnyAuthority="'ROLE_ADMIN'" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-cart" [routerLink]="['/cart/new']">
+        <span>Food Orders</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-food-order" [routerLink]="['/food-order/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
-            Create a new Cart
-            </span>
-        </button>
-        <button  *jhiHasAnyAuthority="'ROLE_USER'" id="jh-checkout-entity" class="btn btn-primary float-right jh-create-entity create-cart" [routerLink]="['/checkout']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span >
-            Checkout
+            Create a new Food Order
             </span>
         </button>
     </h2>
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <br/>
-    <div class="alert alert-warning" *ngIf="carts?.length === 0">
-        <span>No carts found</span>
+    <div class="alert alert-warning" *ngIf="foodOrders?.length === 0">
+        <span>No foodOrders found</span>
     </div>
-    <div class="table-responsive" *ngIf="carts?.length > 0">
+    <div class="table-responsive" *ngIf="foodOrders?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="baseTotal"><span>Base Total</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="finalTotal"><span>Final Total</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="vendorId"><span>Vendor Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="dateCreated"><span>Date Created</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="dateUpdated"><span>Date Updated</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="menuName"><span>Menu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="userLogin"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="orderStatusStatus"><span>Order Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="paymentMethodMethod"><span>Payment Method</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let cart of carts ;trackBy: trackId">
-                <td><a [routerLink]="['/cart', cart.id, 'view' ]">{{cart.id}}</a></td>
-                <td>{{cart.dateCreated | date:'medium'}}</td>
-                <td>{{cart.dateUpdated | date:'medium'}}</td>
+            <tr *ngFor="let foodOrder of foodOrders ;trackBy: trackId">
+                <td><a [routerLink]="['/food-order', foodOrder.id, 'view' ]">{{foodOrder.id}}</a></td>
+                <td>{{foodOrder.baseTotal}}</td>
+                <td>{{foodOrder.finalTotal}}</td>
+                <td>{{foodOrder.vendorId}}</td>
+                <td>{{foodOrder.dateCreated | date:'medium'}}</td>
+                <td>{{foodOrder.dateUpdated | date:'medium'}}</td>
                 <td>
-                    <div *ngIf="cart.menuId">
-                        <a [routerLink]="['/menu', cart.menuId , 'view' ]" >{{cart.menuName}}</a>
+                    {{foodOrder.userLogin}}
+                </td>
+                <td>
+                    <div *ngIf="foodOrder.orderStatusId">
+                        <a [routerLink]="['/order-status', foodOrder.orderStatusId , 'view' ]" >{{foodOrder.orderStatusStatus}}</a>
                     </div>
                 </td>
                 <td>
-                    {{cart.userLogin}}
+                    <div *ngIf="foodOrder.paymentMethodId">
+                        <a [routerLink]="['/payment-method', foodOrder.paymentMethodId , 'view' ]" >{{foodOrder.paymentMethodMethod}}</a>
+                    </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['/cart', cart.id, 'view' ]"
+                                [routerLink]="['/food-order', foodOrder.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
-                        <button *jhiHasAnyAuthority="'ROLE_VENDOR'" type="submit"
-                                [routerLink]="['/cart', cart.id, 'edit']"
+                        <button type="submit"
+                                [routerLink]="['/food-order', foodOrder.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
-                        <button type="submit" (click)="delete(cart)"
+                        <button type="submit" (click)="delete(foodOrder)"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
@@ -70,7 +76,7 @@
             </tbody>
         </table>
     </div>
-    <div [hidden]="carts?.length === 0">
+    <div [hidden]="foodOrders?.length === 0">
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>

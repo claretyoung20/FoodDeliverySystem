@@ -76,6 +76,18 @@ public class PaymentMethod implements Serializable {
     public void setDateUpdated(Instant dateUpdated) {
         this.dateUpdated = dateUpdated;
     }
+
+    @PrePersist
+    public void onPrePersist() {
+        dateCreated = Instant.now();
+        dateUpdated = Instant.now();
+    }
+
+    @PreUpdate
+    void onPreUpdate() {
+        dateUpdated = Instant.now();
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
