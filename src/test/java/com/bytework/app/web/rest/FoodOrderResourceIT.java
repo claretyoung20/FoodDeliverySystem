@@ -4,6 +4,7 @@ import com.bytework.app.ByteworkApp;
 import com.bytework.app.domain.FoodOrder;
 import com.bytework.app.domain.User;
 import com.bytework.app.domain.PaymentMethod;
+import com.bytework.app.domain.DeliveryType;
 import com.bytework.app.repository.FoodOrderRepository;
 import com.bytework.app.service.FoodOrderService;
 import com.bytework.app.service.dto.FoodOrderDTO;
@@ -123,6 +124,16 @@ public class FoodOrderResourceIT {
             paymentMethod = TestUtil.findAll(em, PaymentMethod.class).get(0);
         }
         foodOrder.setPaymentMethod(paymentMethod);
+        // Add required entity
+        DeliveryType deliveryType;
+        if (TestUtil.findAll(em, DeliveryType.class).isEmpty()) {
+            deliveryType = DeliveryTypeResourceIT.createEntity(em);
+            em.persist(deliveryType);
+            em.flush();
+        } else {
+            deliveryType = TestUtil.findAll(em, DeliveryType.class).get(0);
+        }
+        foodOrder.setDeliveryType(deliveryType);
         return foodOrder;
     }
     /**
@@ -153,6 +164,16 @@ public class FoodOrderResourceIT {
             paymentMethod = TestUtil.findAll(em, PaymentMethod.class).get(0);
         }
         foodOrder.setPaymentMethod(paymentMethod);
+        // Add required entity
+        DeliveryType deliveryType;
+        if (TestUtil.findAll(em, DeliveryType.class).isEmpty()) {
+            deliveryType = DeliveryTypeResourceIT.createUpdatedEntity(em);
+            em.persist(deliveryType);
+            em.flush();
+        } else {
+            deliveryType = TestUtil.findAll(em, DeliveryType.class).get(0);
+        }
+        foodOrder.setDeliveryType(deliveryType);
         return foodOrder;
     }
 

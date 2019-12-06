@@ -26,5 +26,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="payment_method"/>
 
+        <addForeignKeyConstraint baseColumnNames="delivery_type_id"
+                                 baseTableName="food_order"
+                                 constraintName="fk_food_order_delivery_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="delivery_type"/>
+
     </changeSet>
 </databaseChangeLog>

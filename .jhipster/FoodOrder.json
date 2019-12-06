@@ -17,7 +17,8 @@
             "relationshipName": "orderStatus",
             "otherEntityName": "orderStatus",
             "relationshipType": "many-to-one",
-            "otherEntityField": "status"
+            "otherEntityField": "status",
+            "otherEntityRelationshipName": "foodOrder"
         },
         {
             "relationshipName": "paymentMethod",
@@ -26,7 +27,18 @@
             "relationshipValidateRules": [
                 "required"
             ],
-            "otherEntityField": "method"
+            "otherEntityField": "method",
+            "otherEntityRelationshipName": "foodOrder"
+        },
+        {
+            "relationshipName": "deliveryType",
+            "otherEntityName": "deliveryType",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "dType",
+            "otherEntityRelationshipName": "foodOrder"
         }
     ],
     "fields": [

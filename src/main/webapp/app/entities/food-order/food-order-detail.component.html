@@ -41,6 +41,12 @@
                         <a [routerLink]="['/payment-method', foodOrder.paymentMethodId, 'view']">{{foodOrder.paymentMethodMethod}}</a>
                     </div>
                 </dd>
+                <dt><span>Delivery Type</span></dt>
+                <dd>
+                    <div *ngIf="foodOrder.deliveryTypeId">
+                        <a [routerLink]="['/delivery-type', foodOrder.deliveryTypeId, 'view']">{{foodOrder.deliveryTypeDType}}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

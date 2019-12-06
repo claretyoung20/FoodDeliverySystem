@@ -6,44 +6,44 @@ import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
-import { IOrderStatus } from 'app/shared/model/order-status.model';
+import { IDeliveryType } from 'app/shared/model/delivery-type.model';
 
-type EntityResponseType = HttpResponse<IOrderStatus>;
-type EntityArrayResponseType = HttpResponse<IOrderStatus[]>;
+type EntityResponseType = HttpResponse<IDeliveryType>;
+type EntityArrayResponseType = HttpResponse<IDeliveryType[]>;
 
 @Injectable({ providedIn: 'root' })
 @Injectable({
   providedIn: 'root'
 })
-export class OrderStatusService {
-  public resourceUrl = SERVER_API_URL + 'api/order-statuses';
+export class DeliveryTypeService {
+  public resourceUrl = SERVER_API_URL + 'api/delivery-types';
 
   constructor(protected http: HttpClient) {}
 
-  create(orderStatusModel: IOrderStatus): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(orderStatusModel);
+  create(deliveryType: IDeliveryType): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(deliveryType);
     return this.http
-      .post<IOrderStatus>(this.resourceUrl, copy, { observe: 'response' })
+      .post<IDeliveryType>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  update(orderStatusModel: IOrderStatus): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(orderStatusModel);
+  update(deliveryType: IDeliveryType): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(deliveryType);
     return this.http
-      .put<IOrderStatus>(this.resourceUrl, copy, { observe: 'response' })
+      .put<IDeliveryType>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
     return this.http
-      .get<IOrderStatus>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .get<IDeliveryType>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
-      .get<IOrderStatus[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .get<IDeliveryType[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
@@ -51,12 +51,10 @@ export class OrderStatusService {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  protected convertDateFromClient(orderStatusModel: IOrderStatus): IOrderStatus {
-    const copy: IOrderStatus = Object.assign({}, orderStatusModel, {
-      dateCreated:
-        orderStatusModel.dateCreated != null && orderStatusModel.dateCreated.isValid() ? orderStatusModel.dateCreated.toJSON() : null,
-      dateUpdated:
-        orderStatusModel.dateUpdated != null && orderStatusModel.dateUpdated.isValid() ? orderStatusModel.dateUpdated.toJSON() : null
+  protected convertDateFromClient(deliveryType: IDeliveryType): IDeliveryType {
+    const copy: IDeliveryType = Object.assign({}, deliveryType, {
+      dateCreated: deliveryType.dateCreated != null && deliveryType.dateCreated.isValid() ? deliveryType.dateCreated.toJSON() : null,
+      dateUpdated: deliveryType.dateUpdated != null && deliveryType.dateUpdated.isValid() ? deliveryType.dateUpdated.toJSON() : null
     });
     return copy;
   }
@@ -71,9 +69,9 @@ export class OrderStatusService {
 
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
-      res.body.forEach((orderStatusModel: IOrderStatus) => {
-        orderStatusModel.dateCreated = orderStatusModel.dateCreated != null ? moment(orderStatusModel.dateCreated) : null;
-        orderStatusModel.dateUpdated = orderStatusModel.dateUpdated != null ? moment(orderStatusModel.dateUpdated) : null;
+      res.body.forEach((deliveryType: IDeliveryType) => {
+        deliveryType.dateCreated = deliveryType.dateCreated != null ? moment(deliveryType.dateCreated) : null;
+        deliveryType.dateUpdated = deliveryType.dateUpdated != null ? moment(deliveryType.dateUpdated) : null;
       });
     }
     return res;

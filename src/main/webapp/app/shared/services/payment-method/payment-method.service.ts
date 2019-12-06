@@ -6,10 +6,10 @@ import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
-import { IPaymentMethodModel } from 'app/shared/model/payment-method.model';
+import { IPaymentMethod } from 'app/shared/model/payment-method.model';
 
-type EntityResponseType = HttpResponse<IPaymentMethodModel>;
-type EntityArrayResponseType = HttpResponse<IPaymentMethodModel[]>;
+type EntityResponseType = HttpResponse<IPaymentMethod>;
+type EntityArrayResponseType = HttpResponse<IPaymentMethod[]>;
 
 @Injectable({ providedIn: 'root' })
 @Injectable({
@@ -20,30 +20,30 @@ export class PaymentMethodService {
 
   constructor(protected http: HttpClient) {}
 
-  create(paymentMethodModel: IPaymentMethodModel): Observable<EntityResponseType> {
+  create(paymentMethodModel: IPaymentMethod): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(paymentMethodModel);
     return this.http
-      .post<IPaymentMethodModel>(this.resourceUrl, copy, { observe: 'response' })
+      .post<IPaymentMethod>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  update(paymentMethodModel: IPaymentMethodModel): Observable<EntityResponseType> {
+  update(paymentMethodModel: IPaymentMethod): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(paymentMethodModel);
     return this.http
-      .put<IPaymentMethodModel>(this.resourceUrl, copy, { observe: 'response' })
+      .put<IPaymentMethod>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
     return this.http
-      .get<IPaymentMethodModel>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .get<IPaymentMethod>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
-      .get<IPaymentMethodModel[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .get<IPaymentMethod[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
@@ -51,8 +51,8 @@ export class PaymentMethodService {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  protected convertDateFromClient(paymentMethodModel: IPaymentMethodModel): IPaymentMethodModel {
-    const copy: IPaymentMethodModel = Object.assign({}, paymentMethodModel, {
+  protected convertDateFromClient(paymentMethodModel: IPaymentMethod): IPaymentMethod {
+    const copy: IPaymentMethod = Object.assign({}, paymentMethodModel, {
       dateCreated:
         paymentMethodModel.dateCreated != null && paymentMethodModel.dateCreated.isValid() ? paymentMethodModel.dateCreated.toJSON() : null,
       dateUpdated:
@@ -71,7 +71,7 @@ export class PaymentMethodService {
 
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
-      res.body.forEach((paymentMethodModel: IPaymentMethodModel) => {
+      res.body.forEach((paymentMethodModel: IPaymentMethod) => {
         paymentMethodModel.dateCreated = paymentMethodModel.dateCreated != null ? moment(paymentMethodModel.dateCreated) : null;
         paymentMethodModel.dateUpdated = paymentMethodModel.dateUpdated != null ? moment(paymentMethodModel.dateUpdated) : null;
       });

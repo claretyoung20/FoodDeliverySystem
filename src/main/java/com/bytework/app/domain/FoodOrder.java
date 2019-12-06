@@ -45,11 +45,30 @@ public class FoodOrder implements Serializable {
     private User user;
 
     @ManyToOne
+    @JsonIgnoreProperties("foodOrders")
     private OrderStatus orderStatus;
 
     @ManyToOne(optional = false)
     @NotNull
+    @JsonIgnoreProperties("foodOrders")
     private PaymentMethod paymentMethod;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("foodOrders")
+    private DeliveryType deliveryType;
+
+
+    @PrePersist
+    public void onPrePersist() {
+        dateCreated = Instant.now();
+        dateUpdated = Instant.now();
+    }
+
+    @PreUpdate
+    void onPreUpdate() {
+        dateUpdated = Instant.now();
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -164,17 +183,18 @@ public class FoodOrder implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
-    @PrePersist
-    public void onPrePersist() {
-        dateCreated = Instant.now();
-        dateUpdated = Instant.now();
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
     }
 
-    @PreUpdate
-    void onPreUpdate() {
-        dateUpdated = Instant.now();
+    public FoodOrder deliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
+        return this;
     }
 
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

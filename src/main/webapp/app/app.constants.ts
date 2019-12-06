@@ -6,3 +6,9 @@ export const VERSION = process.env.VERSION;
 export const DEBUG_INFO_ENABLED = !!process.env.DEBUG_INFO_ENABLED;
 export const SERVER_API_URL = process.env.SERVER_API_URL;
 export const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
+
+export const DELIVERY_TYPE_SELF_DELIVERY = 'SELF_DELIVERY';
+export const DELIVERY_TYPE_OFFICE_DELIVERY = 'OFFICE_DELIVERY';
+
+export const PAYMENT_METHOD_CARD = 'CARD';
+export const PAYMENT_METHOD_ON_DELIVERY = 'ON_DELIVERY';

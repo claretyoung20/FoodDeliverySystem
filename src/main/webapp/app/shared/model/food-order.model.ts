@@ -13,6 +13,8 @@ export interface IFoodOrder {
   orderStatusId?: number;
   paymentMethodMethod?: string;
   paymentMethodId?: number;
+  deliveryTypeDType?: string;
+  deliveryTypeId?: number;
 }
 
 export class FoodOrder implements IFoodOrder {
@@ -28,6 +30,8 @@ export class FoodOrder implements IFoodOrder {
     public orderStatusStatus?: string,
     public orderStatusId?: number,
     public paymentMethodMethod?: string,
-    public paymentMethodId?: number
+    public paymentMethodId?: number,
+    public deliveryTypeDType?: string,
+    public deliveryTypeId?: number
   ) {}
 }

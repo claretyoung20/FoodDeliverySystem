@@ -13,6 +13,7 @@ public interface CartMapper extends EntityMapper<CartDTO, Cart> {
 
     @Mapping(source = "menu.id", target = "menuId")
     @Mapping(source = "menu.name", target = "menuName")
+    @Mapping(source = "menu.price", target = "menuPrice")
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "user.login", target = "userLogin")
     CartDTO toDto(Cart cart);

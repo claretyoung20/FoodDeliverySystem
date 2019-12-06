@@ -38,6 +38,10 @@ public class FoodOrderDTO implements Serializable {
 
     private String paymentMethodMethod;
 
+    private Long deliveryTypeId;
+
+    private String deliveryTypeDType;
+
     public Long getId() {
         return id;
     }
@@ -134,6 +138,22 @@ public class FoodOrderDTO implements Serializable {
         this.paymentMethodMethod = paymentMethodMethod;
     }
 
+    public Long getDeliveryTypeId() {
+        return deliveryTypeId;
+    }
+
+    public void setDeliveryTypeId(Long deliveryTypeId) {
+        this.deliveryTypeId = deliveryTypeId;
+    }
+
+    public String getDeliveryTypeDType() {
+        return deliveryTypeDType;
+    }
+
+    public void setDeliveryTypeDType(String deliveryTypeDType) {
+        this.deliveryTypeDType = deliveryTypeDType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -170,6 +190,8 @@ public class FoodOrderDTO implements Serializable {
             ", orderStatus='" + getOrderStatusStatus() + "'" +
             ", paymentMethod=" + getPaymentMethodId() +
             ", paymentMethod='" + getPaymentMethodMethod() + "'" +
+            ", deliveryType=" + getDeliveryTypeId() +
+            ", deliveryType='" + getDeliveryTypeDType() + "'" +
             "}";
     }
 }

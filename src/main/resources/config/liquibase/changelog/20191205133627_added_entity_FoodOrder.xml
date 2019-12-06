@@ -40,6 +40,9 @@
             <column name="payment_method_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="delivery_type_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="food_order" columnName="date_created" columnDataType="datetime"/>
@@ -72,6 +75,7 @@
             <column name="date_updated" type="datetime"/>
             <column name="user_id" type="numeric"/>
             <column name="payment_method_id" type="numeric"/>
+            <column name="delivery_type_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

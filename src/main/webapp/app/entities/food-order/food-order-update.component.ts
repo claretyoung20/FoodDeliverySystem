@@ -12,10 +12,12 @@ import { IFoodOrder, FoodOrder } from 'app/shared/model/food-order.model';
 import { FoodOrderService } from './food-order.service';
 import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
-import { IOrderStatusModel } from 'app/shared/model/order-status.model';
-import { IPaymentMethodModel } from 'app/shared/model/payment-method.model';
+import { IPaymentMethod } from 'app/shared/model/payment-method.model';
 import { OrderStatusService } from 'app/shared/services/order-status/order-status.service';
 import { PaymentMethodService } from 'app/shared/services/payment-method/payment-method.service';
+import { IDeliveryType } from 'app/shared/model/delivery-type.model';
+import { DeliveryTypeService } from 'app/shared/services/delivery-type/delivery-type.service';
+import { IOrderStatus } from 'app/shared/model/order-status.model';
 
 @Component({
   selector: 'jhi-food-order-update',
@@ -26,9 +28,11 @@ export class FoodOrderUpdateComponent implements OnInit {
 
   users: IUser[];
 
-  orderstatuses: IOrderStatusModel[];
+  orderstatuses: IOrderStatus[];
 
-  paymentmethods: IPaymentMethodModel[];
+  paymentmethods: IPaymentMethod[];
+
+  deliverytypes: IDeliveryType[];
 
   editForm = this.fb.group({
     id: [],
@@ -39,7 +43,8 @@ export class FoodOrderUpdateComponent implements OnInit {
     dateUpdated: [],
     userId: [null, Validators.required],
     orderStatusId: [],
-    paymentMethodId: [null, Validators.required]
+    paymentMethodId: [null, Validators.required],
+    deliveryTypeId: [null, Validators.required]
   });
 
   constructor(
@@ -48,6 +53,7 @@ export class FoodOrderUpdateComponent implements OnInit {
     protected userService: UserService,
     protected orderStatusService: OrderStatusService,
     protected paymentMethodService: PaymentMethodService,
+    protected deliveryTypeService: DeliveryTypeService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -63,13 +69,19 @@ export class FoodOrderUpdateComponent implements OnInit {
     this.orderStatusService
       .query()
       .subscribe(
-        (res: HttpResponse<IOrderStatusModel[]>) => (this.orderstatuses = res.body),
+        (res: HttpResponse<IOrderStatus[]>) => (this.orderstatuses = res.body),
         (res: HttpErrorResponse) => this.onError(res.message)
       );
     this.paymentMethodService
       .query()
       .subscribe(
-        (res: HttpResponse<IPaymentMethodModel[]>) => (this.paymentmethods = res.body),
+        (res: HttpResponse<IPaymentMethod[]>) => (this.paymentmethods = res.body),
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+    this.deliveryTypeService
+      .query()
+      .subscribe(
+        (res: HttpResponse<IDeliveryType[]>) => (this.deliverytypes = res.body),
         (res: HttpErrorResponse) => this.onError(res.message)
       );
   }
@@ -84,7 +96,8 @@ export class FoodOrderUpdateComponent implements OnInit {
       dateUpdated: foodOrder.dateUpdated != null ? foodOrder.dateUpdated.format(DATE_TIME_FORMAT) : null,
       userId: foodOrder.userId,
       orderStatusId: foodOrder.orderStatusId,
-      paymentMethodId: foodOrder.paymentMethodId
+      paymentMethodId: foodOrder.paymentMethodId,
+      deliveryTypeId: foodOrder.deliveryTypeId
     });
   }
 
@@ -115,7 +128,8 @@ export class FoodOrderUpdateComponent implements OnInit {
         this.editForm.get(['dateUpdated']).value != null ? moment(this.editForm.get(['dateUpdated']).value, DATE_TIME_FORMAT) : undefined,
       userId: this.editForm.get(['userId']).value,
       orderStatusId: this.editForm.get(['orderStatusId']).value,
-      paymentMethodId: this.editForm.get(['paymentMethodId']).value
+      paymentMethodId: this.editForm.get(['paymentMethodId']).value,
+      deliveryTypeId: this.editForm.get(['deliveryTypeId']).value
     };
   }
 
@@ -139,11 +153,15 @@ export class FoodOrderUpdateComponent implements OnInit {
     return item.id;
   }
 
-  trackOrderStatusById(index: number, item: IOrderStatusModel) {
+  trackOrderStatusById(index: number, item: IOrderStatus) {
     return item.id;
   }
 
-  trackPaymentMethodById(index: number, item: IPaymentMethodModel) {
+  trackPaymentMethodById(index: number, item: IPaymentMethod) {
+    return item.id;
+  }
+
+  trackDeliveryTypeById(index: number, item: IDeliveryType) {
     return item.id;
   }
 }

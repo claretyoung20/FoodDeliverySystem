@@ -27,6 +27,7 @@
             <th scope="col"  jhiSortBy="userLogin"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="orderStatusStatus"><span>Order Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="paymentMethodMethod"><span>Payment Method</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="deliveryTypeDType"><span>Delivery Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -49,6 +50,11 @@
                 <td>
                     <div *ngIf="foodOrder.paymentMethodId">
                         <a [routerLink]="['/payment-method', foodOrder.paymentMethodId , 'view' ]" >{{foodOrder.paymentMethodMethod}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="foodOrder.deliveryTypeId">
+                        <a [routerLink]="['/delivery-type', foodOrder.deliveryTypeId , 'view' ]" >{{foodOrder.deliveryTypeDType}}</a>
                     </div>
                 </td>
                 <td class="text-right">
