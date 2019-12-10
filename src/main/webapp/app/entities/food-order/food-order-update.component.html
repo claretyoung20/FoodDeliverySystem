@@ -11,7 +11,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_baseTotal">Base Total</label>
-                    <input type="number" class="form-control" name="baseTotal" id="field_baseTotal"
+                    <input readonly type="number" class="form-control" name="baseTotal" id="field_baseTotal"
                            formControlName="baseTotal"/>
                     <div *ngIf="editForm.get('baseTotal').invalid && (editForm.get('baseTotal').dirty || editForm.get('baseTotal').touched)">
                         <small class="form-text text-danger"
@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_finalTotal">Final Total</label>
-                    <input type="number" class="form-control" name="finalTotal" id="field_finalTotal"
+                    <input readonly type="number" class="form-control" name="finalTotal" id="field_finalTotal"
                            formControlName="finalTotal"/>
                     <div *ngIf="editForm.get('finalTotal').invalid && (editForm.get('finalTotal').dirty || editForm.get('finalTotal').touched)">
                         <small class="form-text text-danger"
@@ -45,7 +45,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_vendorId">Vendor Id</label>
-                    <input type="number" class="form-control" name="vendorId" id="field_vendorId"
+                    <input readonly type="number" class="form-control" name="vendorId" id="field_vendorId"
                            formControlName="vendorId"/>
                     <div *ngIf="editForm.get('vendorId').invalid && (editForm.get('vendorId').dirty || editForm.get('vendorId').touched)">
                         <small class="form-text text-danger"
@@ -73,7 +73,7 @@
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_user">User</label>
-                    <select class="form-control" id="field_user" name="user" formControlName="userId">
+                    <select  readonly class="form-control" id="field_user" name="user" formControlName="userId">
                         <option *ngIf="!editForm.get('userId').value" [ngValue]="null" selected></option>
                         <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
                     </select>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_paymentMethod">Payment Method</label>
-                    <select class="form-control" id="field_paymentMethod" name="paymentMethod" formControlName="paymentMethodId">
+                    <select readonly class="form-control" id="field_paymentMethod" name="paymentMethod" formControlName="paymentMethodId">
                         <option *ngIf="!editForm.get('paymentMethodId').value" [ngValue]="null" selected></option>
                         <option [ngValue]="paymentMethodOption.id" *ngFor="let paymentMethodOption of paymentmethods; trackBy: trackPaymentMethodById">{{paymentMethodOption.method}}</option>
                     </select>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_deliveryType">Delivery Type</label>
-                    <select class="form-control" id="field_deliveryType" name="deliveryType" formControlName="deliveryTypeId">
+                    <select readonly class="form-control" id="field_deliveryType" name="deliveryType" formControlName="deliveryTypeId">
                         <option *ngIf="!editForm.get('deliveryTypeId').value" [ngValue]="null" selected></option>
                         <option [ngValue]="deliveryTypeOption.id" *ngFor="let deliveryTypeOption of deliverytypes; trackBy: trackDeliveryTypeById">{{deliveryTypeOption.dType}}</option>
                     </select>

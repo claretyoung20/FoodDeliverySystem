@@ -70,7 +70,7 @@ export const foodOrderRoute: Routes = [
       foodOrder: FoodOrderResolve
     },
     data: {
-      authorities: ['ROLE_ADMIN'],
+      authorities: ['ROLE_ADMIN', 'ROLE_VENDOR'],
       pageTitle: 'FoodOrders'
     },
     canActivate: [UserRouteAccessService]

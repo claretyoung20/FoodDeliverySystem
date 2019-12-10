@@ -57,7 +57,7 @@
                         <a [routerLink]="['/delivery-type', foodOrder.deliveryTypeId , 'view' ]" >{{foodOrder.deliveryTypeDType}}</a>
                     </div>
                 </td>
-                <td class="text-right" *jhiHasAnyAuthority="'ROLE_ADMIN'" >
+                <td class="text-right" *jhiHasAnyAuthority="'ROLE_VENDOR'" >
                     <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/food-order', foodOrder.id, 'view' ]"
