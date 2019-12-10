@@ -3,6 +3,7 @@ package com.bytework.app.repository;
 import com.bytework.app.domain.User;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;

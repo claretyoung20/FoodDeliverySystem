@@ -43,4 +43,10 @@ public interface MenuService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Find menu by user ID
+     * @param id
+     */
+    Page<MenuDTO> findAllByUserId(long id, Pageable pageable);
 }

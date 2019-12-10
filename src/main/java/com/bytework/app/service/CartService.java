@@ -5,6 +5,7 @@ import com.bytework.app.service.dto.CartDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -50,4 +51,6 @@ public interface CartService {
      * @param id
      */
     Page<CartDTO> findAllByUserId(long id, Pageable pageable);
+
+    void deleteAllByUserId(long id);
 }

@@ -35,6 +35,14 @@
                     </span>
                 </a>
             </li>
+            <li *jhiHasAnyAuthority="'ROLE_USER'" class="nav-item">
+                <a class="nav-link" routerLink="food-order" (click)="collapseNavbar()">
+                    <span>
+                        <fa-icon icon="food-order"></fa-icon>
+                        <span>My Order</span>
+                    </span>
+                </a>
+            </li>
             <!-- END OF USER NAV -->
             <li *jhiHasAnyAuthority="'ROLE_VENDOR'" ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
@@ -58,10 +66,16 @@
                             <span>Cart</span>
                         </a>
                     </li>
-                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                    <li *jhiHasAnyAuthority="'ROLE_VENDOR'">
                         <a class="dropdown-item" routerLink="food-order" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span>Food Order</span>
+                        </a>
+                    </li>
+                    <li *jhiHasAnyAuthority="'ROLE_VENDOR'">
+                        <a class="dropdown-item" routerLink="vendor-address" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span>Vendor Address</span>
                         </a>
                     </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->

@@ -1,0 +1,90 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-vendor-address-heading">Create or edit a Vendor Address</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_fullAdress">Full Adress</label>
+                    <input type="text" class="form-control" name="fullAdress" id="field_fullAdress"
+                           formControlName="fullAdress"/>
+                    <div *ngIf="editForm.get('fullAdress').invalid && (editForm.get('fullAdress').dirty || editForm.get('fullAdress').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('fullAdress').errors.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_vLat">Latitude</label>
+                    <input type="number" class="form-control" name="vLat" id="field_vLat"
+                           formControlName="vLat"/>
+                    <div *ngIf="editForm.get('vLat').invalid && (editForm.get('vLat').dirty || editForm.get('vLat').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('vLat').errors.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('vLat')?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_vLng">Longitude</label>
+                    <input type="number" class="form-control" name="vLng" id="field_vLng"
+                           formControlName="vLng"/>
+                    <div *ngIf="editForm.get('vLng').invalid && (editForm.get('vLng').dirty || editForm.get('vLng').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('vLng').errors.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('vLng')?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="form-control-label" for="field_dateCreated">Date Created</label>-->
+                    <!--<div class="d-flex">-->
+                        <!--<input id="field_dateCreated" type="datetime-local" class="form-control" name="dateCreated" formControlName="dateCreated" placeholder="YYYY-MM-DD HH:mm"/>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label class="form-control-label" for="field_dateUpdated">Date Updated</label>-->
+                    <!--<div class="d-flex">-->
+                        <!--<input id="field_dateUpdated" type="datetime-local" class="form-control" name="dateUpdated" formControlName="dateUpdated" placeholder="YYYY-MM-DD HH:mm"/>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_user">User</label>
+                    <select class="form-control" id="field_user" name="user" formControlName="userId">
+                        <option *ngIf="!editForm.get('userId').value" [ngValue]="null" selected></option>
+                        <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('userId').invalid && (editForm.get('userId').dirty || editForm.get('userId').touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('userId').errors.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

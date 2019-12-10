@@ -1,0 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="vendorAddress">
+            <h2><span>Vendor Address</span> {{vendorAddress.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Full Adress</span></dt>
+                <dd>
+                    <span>{{vendorAddress.fullAdress}}</span>
+                </dd>
+                <dt><span>V Lat</span></dt>
+                <dd>
+                    <span>{{vendorAddress.vLat}}</span>
+                </dd>
+                <dt><span>V Lng</span></dt>
+                <dd>
+                    <span>{{vendorAddress.vLng}}</span>
+                </dd>
+                <dt><span>Date Created</span></dt>
+                <dd>
+                    <span>{{vendorAddress.dateCreated}}</span>
+                </dd>
+                <dt><span>Date Updated</span></dt>
+                <dd>
+                    <span>{{vendorAddress.dateUpdated}}</span>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    {{vendorAddress.userLogin}}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/vendor-address', vendorAddress.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

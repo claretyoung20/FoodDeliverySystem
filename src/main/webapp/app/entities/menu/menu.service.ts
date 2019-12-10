@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { IMenu } from 'app/shared/model/menu.model';
+import { ICart } from 'app/shared/model/cart.model';
 
 type EntityResponseType = HttpResponse<IMenu>;
 type EntityArrayResponseType = HttpResponse<IMenu[]>;
@@ -74,5 +75,14 @@ export class MenuService {
       });
     }
     return res;
+  }
+
+  /* get by user id*/
+  queryById(id: any, req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    const url = `${this.resourceUrl}/user/${id}`;
+    return this.http
+      .get<ICart[]>(url, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 }

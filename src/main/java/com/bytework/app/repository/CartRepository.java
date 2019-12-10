@@ -19,4 +19,5 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 
     Page<Cart> findAllByUserId(Long id, Pageable pageable);
 
+    void deleteAllByUserId(long id);
 }

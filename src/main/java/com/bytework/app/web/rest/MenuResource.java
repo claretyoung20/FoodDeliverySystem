@@ -96,9 +96,7 @@ public class MenuResource {
     @GetMapping("/menus")
     public ResponseEntity<List<MenuDTO>> getAllMenus(Pageable pageable) {
         log.debug("REST request to get a page of Menus");
-        Page<MenuDTO> page = menuService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return getListResponseEntity(menuService.findAll(pageable));
     }
 
     /**
@@ -126,4 +124,17 @@ public class MenuResource {
         menuService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
+
+    @GetMapping("/menus/user/{id}")
+    public ResponseEntity<List<MenuDTO>> getByAllUserId(@PathVariable Long id, Pageable pageable) {
+        log.debug("REST request to get Menu by user id: {}", id);
+        return getListResponseEntity(menuService.findAllByUserId(id, pageable));
+    }
+
+    private ResponseEntity<List<MenuDTO>> getListResponseEntity(Page<MenuDTO> allByUserId) {
+        Page<MenuDTO> page = allByUserId;
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
 }

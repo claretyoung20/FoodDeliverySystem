@@ -8,6 +8,7 @@ public class CalculateLocation {
     private double vendorLat;
     private double vendorLong;
 
+
     public double getVendorLat() {
         return vendorLat;
     }

@@ -43,4 +43,8 @@ public interface FoodOrderService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Page<FoodOrderDTO> findAllByUserId(long id, Pageable pageable);
+
+    Page<FoodOrderDTO> findAllByVendorId(long id, Pageable pageable);
 }

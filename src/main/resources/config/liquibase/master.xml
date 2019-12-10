@@ -21,10 +21,12 @@
     <include file="config/liquibase/changelog/20191205122256_added_entity_CardInfo.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191205133627_added_entity_FoodOrder.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191206122123_added_entity_DeliveryType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191208113742_added_entity_VendorAddress.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20191204101416_added_entity_constraints_Menu.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191204130511_added_entity_constraints_Cart.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191205122256_added_entity_constraints_CardInfo.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191205133627_added_entity_constraints_FoodOrder.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191208113742_added_entity_constraints_VendorAddress.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

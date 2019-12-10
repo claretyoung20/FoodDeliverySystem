@@ -49,7 +49,8 @@ spring:
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
   liquibase:
-    contexts: dev
+    # Remove 'faker' if you do not want the sample data to be loaded automatically
+    contexts: dev, faker
   mail:
     host: localhost
     port: 25

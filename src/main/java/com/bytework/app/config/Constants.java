@@ -12,6 +12,13 @@ public final class Constants {
     public static final String DEFAULT_LANGUAGE = "en";
     public static final String ANONYMOUS_USER = "anonymoususer";
 
+
+    public static final String DELIVERY_TYPE_SELF_DELIVERY = "SELF_DELIVERY";
+    public static final String DELIVERY_TYPE_OFFICE_DELIVERY = "OFFICE_DELIVERY";
+
+    public static final String PAYMENT_METHOD_CARD = "CARD";
+    public static final String PAYMENT_METHOD_ON_DELIVERY = "ON_DELIVERY";
+
     private Constants() {
     }
 }

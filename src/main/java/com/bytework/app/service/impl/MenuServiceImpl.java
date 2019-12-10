@@ -86,4 +86,16 @@ public class MenuServiceImpl implements MenuService {
         log.debug("Request to delete Menu : {}", id);
         menuRepository.deleteById(id);
     }
+
+
+    /**
+     * Get menu by user id
+     * @param id the user id.
+     * */
+    @Override
+    public Page<MenuDTO> findAllByUserId(long id, Pageable pageable) {
+        log.debug("Request to get all Menu by user id: {}", id);
+        return menuRepository.findAllByUserId(id, pageable)
+            .map(menuMapper::toDto);
+    }
 }

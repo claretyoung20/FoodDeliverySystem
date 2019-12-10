@@ -86,4 +86,18 @@ public class FoodOrderServiceImpl implements FoodOrderService {
         log.debug("Request to delete FoodOrder : {}", id);
         foodOrderRepository.deleteById(id);
     }
+
+    @Override
+    public Page<FoodOrderDTO> findAllByUserId(long id, Pageable pageable) {
+        log.debug("Request to get all food order by user id: {}", id);
+        return foodOrderRepository.findAllByUserId(id, pageable)
+            .map(foodOrderMapper::toDto);
+    }
+
+    @Override
+    public Page<FoodOrderDTO> findAllByVendorId(long id, Pageable pageable) {
+        log.debug("Request to get all food vendor by user id: {}", id);
+        return foodOrderRepository.findAllByVendorId(id, pageable)
+            .map(foodOrderMapper::toDto);
+    }
 }

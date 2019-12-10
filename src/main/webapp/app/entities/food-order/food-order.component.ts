@@ -10,6 +10,8 @@ import { IFoodOrder } from 'app/shared/model/food-order.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { FoodOrderService } from './food-order.service';
 import { FoodOrderDeleteDialogComponent } from './food-order-delete-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
 
 @Component({
   selector: 'jhi-food-order',
@@ -28,6 +30,7 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
   predicate: any;
   previousPage: any;
   reverse: any;
+  account: Account;
 
   constructor(
     protected foodOrderService: FoodOrderService,
@@ -35,7 +38,8 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private accountService: AccountService
   ) {
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -47,13 +51,31 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
   }
 
   loadAll() {
-    this.foodOrderService
-      .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe((res: HttpResponse<IFoodOrder[]>) => this.paginateFoodOrders(res.body, res.headers));
+    if (this.account.authorities.includes('ROLE_USER')) {
+      this.foodOrderService
+        .queryBy(this.account.id, 'user', {
+          page: this.page - 1,
+          size: this.itemsPerPage,
+          sort: this.sort()
+        })
+        .subscribe((res: HttpResponse<IFoodOrder[]>) => this.paginateFoodOrders(res.body, res.headers));
+    } else if (this.account.authorities.length === 1 && this.account.authorities.includes('ROLE_VENDOR')) {
+      this.foodOrderService
+        .queryBy(this.account.id, 'vendor', {
+          page: this.page - 1,
+          size: this.itemsPerPage,
+          sort: this.sort()
+        })
+        .subscribe((res: HttpResponse<IFoodOrder[]>) => this.paginateFoodOrders(res.body, res.headers));
+    } else {
+      this.foodOrderService
+        .query({
+          page: this.page - 1,
+          size: this.itemsPerPage,
+          sort: this.sort()
+        })
+        .subscribe((res: HttpResponse<IFoodOrder[]>) => this.paginateFoodOrders(res.body, res.headers));
+    }
   }
 
   loadPage(page: number) {
@@ -87,6 +109,9 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.accountService.identity().subscribe((account: Account) => {
+      this.account = account;
+    });
     this.loadAll();
     this.registerChangeInFoodOrders();
   }

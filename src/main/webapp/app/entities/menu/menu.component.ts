@@ -56,13 +56,26 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   loadAll() {
-    this.menuService
-      .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe((res: HttpResponse<IMenu[]>) => this.paginateMenus(res.body, res.headers));
+    if (this.account.authorities.length === 1 && this.account.authorities.includes('ROLE_VENDOR')) {
+      this.menuService
+        .queryById(this.account.id, {
+          page: this.page - 1,
+          size: this.itemsPerPage,
+          sort: this.sort()
+        })
+        .subscribe((res: HttpResponse<IMenu[]>) => this.paginateMenus(res.body, res.headers));
+    } else {
+      // TODO
+      // check if user have cart items get the first item vendor id, use it to display
+      // menu only for the vendor to prevent multiple vendor selection
+      this.menuService
+        .query({
+          page: this.page - 1,
+          size: this.itemsPerPage,
+          sort: this.sort()
+        })
+        .subscribe((res: HttpResponse<IMenu[]>) => this.paginateMenus(res.body, res.headers));
+    }
   }
 
   loadPage(page: number) {
@@ -96,10 +109,10 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadAll();
     this.accountService.identity().subscribe((account: Account) => {
       this.account = account;
     });
+    this.loadAll();
     this.registerChangeInMenus();
   }
 
@@ -149,11 +162,15 @@ export class MenuComponent implements OnInit, OnDestroy {
     cart.userId = this.account.id;
 
     this.subscribeToSaveResponse(this.cartService.create(cart));
+
+    // TODO hide other food from vendor...
+    // make an API call to get menu food only for the vendor of the food in cart already
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ICart>>) {
     result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
   }
+
   protected onSaveSuccess() {
     this.jhiAlertService.success('food has been added to cart!!!', null, null);
   }

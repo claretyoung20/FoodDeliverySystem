@@ -55,6 +55,10 @@ export class MenuUpdateComponent implements OnInit {
       .subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
+  // isVendor(value: IUser) {
+  //   return value.authorities.includes('ROLE_VENDOR');
+  // }
+
   updateForm(menu: IMenu) {
     this.editForm.patchValue({
       id: menu.id,

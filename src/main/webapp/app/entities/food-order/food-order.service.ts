@@ -46,6 +46,14 @@ export class FoodOrderService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  queryBy(id, user, req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    const url = `${this.resourceUrl}/${user}/${id}`;
+    return this.http
+      .get<IFoodOrder[]>(url, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
